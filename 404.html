@@ -21,14 +21,9 @@
       var isValidRoute = validRoutes.includes(currentPath);
       
       if (isValidRoute) {
-        // Valid route - redirect to SPA
+        // Valid route - redirect directly to the route
         var l = window.location;
-        l.replace(
-          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-          '/?/' + l.pathname.slice(1) +
-          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-          l.hash
-        );
+        window.location.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + '/#' + l.pathname);
       } else {
         // Invalid route - show actual 404 page
         document.addEventListener('DOMContentLoaded', function() {
