@@ -95,7 +95,9 @@ export const projectsData: Record<string, ProjectData> = {
     imageSets: [
       {
         name: 'Channel Composition on Given Images',
-        description: `Below are the all 14 composed Images based on the algorithmn I developed from the Prokudin-Gorskii photo collection. Note that for some images the performance is great, yet for some there are spaces to improve.`,
+        description: `Below are the all 14 composed Images based on the algorithmn I developed from the Prokudin-Gorskii photo collection. Note that for some images the performance is great, yet for some there are spaces to improve. 
+        The displacement vector is included and in format of (x,y), where (0,0) represents the top left corner.The first vector presents the displacement
+        for blue channel with respect to red, while the second represents green channel w.r.t to red.`,
         images: [
           'cathedral.jpg',
           'church.jpg', 
@@ -113,41 +115,44 @@ export const projectsData: Record<string, ProjectData> = {
           'tobolsk.jpg'
         ],
         captions: [
-          'Cathedral',
-          'Church',
-          'Emir',
-          'Harvesters',
-          'Icon',
-          'Italian Lake',
-          'Lastochikino',
-          'Lugano',
-          'Melons',
-          'Monastery',
-          'Self Portrait',
-          'Siren',
-          'Three Generations',
-          'Tobolsk'
+          'Cathedral - Displacement vectors are (0, 12) and (0, 8)',
+          'Church - Displacement vectors are (-6, 58) and (-4, 34)',
+          'Emir - Displacement vectors are (-16, 114) and (-8, 112)',
+          'Harvesters - Displacement vectors are (0, 156) and (-2, 66)',
+          'Icon - Displacement vectors are (22, 90) and (4, 48)',
+          'Italian Lake - Displacement vectors are (34, 78) and (14, 38)',
+          'Lastochikino - Displacement vectors are (0, 222) and (-4, 78)',
+          'Lugano - Displacement vectors are (-28, 92) and (-12, 52)',
+          'Melons - Displacement vectors are (-8, 180) and (2, 96)',
+          'Monastery - Displacement vectors are (0, 10) and (0, 6)',
+          'Self Portrait - Displacement vectors are (-2, 180) and (6, 98)',
+          'Siren - Displacement vectors are (-20, 98) and (-16, 46)',
+          'Three Generations - Displacement vectors are (-8, 114) and (0, 58)',
+          'Tobolsk - Displacement vectors are (2, 6) and (0, 4)'
         ]
       },
       {
         name: 'Self-selected Image',
-        description: `These are the images I selected from Prokudin-Gorskii collection. The composing algorithmn also works decent on them!`,
+        description: `These are the images I selected from Prokudin-Gorskii collection. The composing algorithmn also works decent on them! 
+        The displacement vector are included and in format of (x,y), where (0,0) represents the top left corner. The first vector presents the displacement
+        for blue channel with respect to red, while the second represents green channel w.r.t to red.`,
         images: ['self_choice_Napoleon.jpg',
             'Liesnaia_doroga.jpg',
             'crumbling_mosque.jpg',
             'by_the_Gundukush_dam.jpg'
         ],
-        captions: ['Napoleon',
-          'Liesnaia_doroga',
-          'The crumbling Mosque',
-          'By the Gundukush dam'
+        captions: ['Napoleon - Displacement vectors (-4, 154) and (0, 100)',
+          'Liesnaia_doroga - Displacement vectors (4, 100) and (36, 58)',
+          'The crumbling Mosque - Displacement vectors (8, 72) and (0, 44)',
+          'By the Gundukush dam - Displacement vectors (-20, 134) and (-8, 62)'
         ]
       },
       {
         name: 'L-2 vs NCC Comparison',
         description: `Comparison between L-2 norm and Normalized Cross-Correlation (NCC) alignment methods`,
         images: ['L-2.jpg', 'NCC.jpg'],
-        captions: ['L-2 Norm Result', 'NCC Result']
+        captions: ['L-2 Norm Result, the displacement vectors are (810, 810) and (-6, 34)', 
+          'NCC Result, the displacement vectors are (-6, 58) and (-4, 34)']
       }
     ],
     technologies: ['Image Alignment', 'Channel Composition', 'Image Overlapping Criterion', 'Image Pyramid'],

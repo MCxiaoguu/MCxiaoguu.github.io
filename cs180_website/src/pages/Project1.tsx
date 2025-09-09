@@ -75,7 +75,9 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
             className="underline text-[#222] dark:text-[#e5e5e5] mx-1"
           >
             Prokudin-Gorskii photo collection
-          </a>. Note that for some images the performance is great, yet for some there are spaces to improve.
+          </a>. Note that for some images the performance is great, yet for some there are spaces to improve.The displacement vector is included and in format of (x,y), 
+          where (0,0) represents the top left corner.The first vector presents the displacement
+        for blue channel with respect to red, while the second represents green channel w.r.t to red.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {project.imageSets[0].captions.map((caption, index) => {
@@ -114,15 +116,7 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
           {project.imageSets[1].name}
         </h2>
         <p className="text-[#666] dark:text-[#999] mb-8 leading-relaxed">
-          These are the images I selected from{' '}
-          <a 
-            href="https://www.loc.gov/collections/prokudin-gorskii/?st=grid" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="underline text-[#222] dark:text-[#e5e5e5] mx-1"
-          >
-            Prokudin-Gorskii collection
-          </a>. The composing algorithmn also works decent on them!
+          {project.imageSets[1].description}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {project.imageSets[1].captions.map((caption, index) => {
@@ -171,7 +165,7 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
               Then, I found the best vector displacement to move a frame to make the picture aligned. I primarily tried two metrics for scoring:
               naive L-2 norm, and Normalized Cross-Correlation (NCC). L-2 Norm calculates way more faster but gives less desirable result, while NCC demonstrates
               a slower computational efficiency, albeit the parallelism from Numpy and OpenCV, but way better result. The comparison for the same image aligning of a 
-              picture can be seen below.
+              picture can be seen below. Note how the displacement vectors calculated drastically differed from each other.
             </p>
             
             {/* L-2 vs NCC Comparison */}
@@ -239,28 +233,39 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
             <ul className="space-y-2 text-[#666] dark:text-[#999]">
               <li className="flex items-start">
                 <span className="text-[#222] dark:text-[#e5e5e5] mr-2">•</span>
-                <span><strong>Image Pyramid:
-                    </strong> For large images, I used a scale of 16x to original scale to fasten the grid search.</span>
+                <span>
+                  <span className="font-bold font-sans">Image Slicing:</span> Because images are provided as pure grayscale, they have the same value on each of the three channels. Therefore,
+                  I arbitrarily selected the first channel and extract it. Then, I simply sliced the frames into three by the one-third of the total height - as the 
+                  given images are vertically stacked together.
+                </span>
               </li>
               <li className="flex items-start">
                 <span className="text-[#222] dark:text-[#e5e5e5] mr-2">•</span>
-                <span><strong>Image Scaling:
-                    </strong> I used 16x as a begining, as it would reduce even the 3000x3000~ tif image to around 300x300. Even for 2000s computer 
-                    they can still efficiently handle grid search at a usable speed. 
-                    For implementations, I called the most fundamental <a 
-                      href="https://opencv.org/blog/resizing-and-rescaling-images-with-opencv/" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="underline text-[#222] dark:text-[#e5e5e5] mx-1"
-                    >cv.resize from OpenCV</a> for image resizing, as per requirement says. 
-                    By default (which is what I used) it uses the average method to downsampling the image.</span>
+                <span>
+                  <span className="font-bold font-sans">Image Pyramid:</span> For large images, I used a scale of 16x to original scale to fasten the grid search.
+                </span>
               </li>
               <li className="flex items-start">
                 <span className="text-[#222] dark:text-[#e5e5e5] mr-2">•</span>
-                <span><strong>Dynamic Grid Searching:
-                    </strong> Because I scaled the image to different sizes each time, I dynamically reduce the grid search radius for 
-                    computation efficieny. At the scale of 16, I begin with a radius of 30, then I gradually reduce it to 10 to ensure that the 
-                    search is efficient as I am dealing with larger image (less scaling)</span>
+                <span>
+                  <span className="font-bold font-sans">Image Scaling:</span> I used 16x as a begining, as it would reduce even the 3000x3000~ tif image to around 300x300. Even for 2000s computer 
+                  they can still efficiently handle grid search at a usable speed. 
+                  For implementations, I called the most fundamental <a 
+                    href="https://opencv.org/blog/resizing-and-rescaling-images-with-opencv/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="underline text-[#222] dark:text-[#e5e5e5] mx-1"
+                  >cv.resize from OpenCV</a> for image resizing, as per requirement says. 
+                  By default (which is what I used) it uses the average method to downsampling the image.
+                </span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-[#222] dark:text-[#e5e5e5] mr-2">•</span>
+                <span>
+                  <span className="font-bold">Dynamic Grid Searching:</span> Because I scaled the image to different sizes each time, I dynamically reduce the grid search radius for 
+                  computation efficieny. At the scale of 16, I begin with a radius of 30, then I gradually reduce it to 10 to ensure that the 
+                  search is efficient as I am dealing with larger image (less scaling)
+                </span>
               </li>
             </ul>
           </div>
@@ -286,6 +291,9 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
               clothing color variations that affected standard correlation metrics.
             <br />However, as it can be seen that there are some images still not perfectly aligned. It might be due to the radius of the Grid search: the optimal
             displacement sometimes lies outside the radius! Nevertheless, for most of the images, the alignments are fairly effective!
+            <br />Another thing worth noticing here is that sometimes at the coarser level of the image pyramid, a vector containing 0 may be calculated. After scaling up,
+            this would remain the same and therefore might be out of Grid radius for certain circumstances. Solutions might include adding a small residual part to prevent the fixation of 
+            0 after scaling.
             </p>
           </div>
         </div>
