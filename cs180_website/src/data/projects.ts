@@ -95,8 +95,7 @@ export const projectsData: Record<string, ProjectData> = {
     imageSets: [
       {
         name: 'Channel Composition on Given Images',
-        description: `Below are the all 14 composed Images based on the algorithmn I developed. Note that for some images the performance is great,
-        yet for some there are spaces to improve. `,
+        description: `Below are the all 14 composed Images based on the algorithmn I developed from the Prokudin-Gorskii photo collection. Note that for some images the performance is great, yet for some there are spaces to improve.`,
         images: [
           'cathedral.jpg',
           'church.jpg', 
@@ -132,8 +131,7 @@ export const projectsData: Record<string, ProjectData> = {
       },
       {
         name: 'Self-selected Image',
-        description: `These are the images I selected from Prokudin-Gorskii collection. The composing algorithmn also works decent on them!
-        `,
+        description: `These are the images I selected from Prokudin-Gorskii collection. The composing algorithmn also works decent on them!`,
         images: ['self_choice_Napoleon.jpg'],
         captions: ['Napoleon']
       },

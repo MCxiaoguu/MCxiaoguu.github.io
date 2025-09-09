@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BaseProject, ProjectImageGrid, ProjectSidebar } from '../components/BaseProject'
 import { projectsData, getImageUrl } from '../data/projects'
 import MermaidChart from '../components/MermaidChart'
 import MermaidDiagram from '../components/MermaidDiagram'
+import ImageModal from '../components/ImageModal'
 
 interface Project1Props {
   isDark: boolean
@@ -12,6 +13,9 @@ interface Project1Props {
 const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
   // TODO: Update the project id and data for Project 1
   const project = projectsData['2']
+  
+  // Modal state for image popup
+  const [modalImage, setModalImage] = useState<{ src: string; alt: string } | null>(null)
 
   // Mermaid flowchart from prj1_alg.md
   const algorithmFlowchart = `flowchart TD
@@ -63,18 +67,30 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
           {project.imageSets[0].name}
         </h2>
         <p className="text-[#666] dark:text-[#999] mb-8 leading-relaxed">
-          {project.imageSets[0].description}
+          Below are the all 14 composed Images based on the algorithmn I developed from the{' '}
+          <a 
+            href="https://www.loc.gov/collections/prokudin-gorskii/?st=grid" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            Prokudin-Gorskii photo collection
+          </a>. Note that for some images the performance is great, yet for some there are spaces to improve.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {project.imageSets[0].captions.map((caption, index) => {
                     const imageName = project.imageSets[0].images[index];
+                    const imageSrc = getImageUrl(project.folder, imageName);
                     return (
                       <div key={caption} className="flex flex-col">
-                        <div className="aspect-[4/3] rounded-lg overflow-hidden">
+                        <div 
+                          className="aspect-[4/3] rounded-lg overflow-hidden cursor-pointer"
+                          onClick={() => setModalImage({ src: imageSrc, alt: `${caption} colorized image` })}
+                        >
                           <img
-                            src={getImageUrl(project.folder, imageName)}
+                            src={imageSrc}
                             alt={`${caption} colorized image`}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-contain"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement
                               target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4='
@@ -98,18 +114,30 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
           {project.imageSets[1].name}
         </h2>
         <p className="text-[#666] dark:text-[#999] mb-8 leading-relaxed">
-          {project.imageSets[1].description}
+          These are the images I selected from{' '}
+          <a 
+            href="https://www.loc.gov/collections/prokudin-gorskii/?st=grid" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            Prokudin-Gorskii collection
+          </a>. The composing algorithmn also works decent on them!
         </p>
         <div className="grid grid-cols-1 gap-4">
             {project.imageSets[1].captions.map((caption, index) => {
                     const imageName = project.imageSets[1].images[index];
+                    const imageSrc = getImageUrl(project.folder, imageName);
                     return (
                       <div key={caption} className="flex flex-col">
-                        <div className="aspect-[4/3] rounded-lg overflow-hidden max-w-md mx-auto">
+                        <div 
+                          className="aspect-[4/3] rounded-lg overflow-hidden max-w-md mx-auto cursor-pointer"
+                          onClick={() => setModalImage({ src: imageSrc, alt: `${caption} colorized image` })}
+                        >
                           <img
-                            src={getImageUrl(project.folder, imageName)}
+                            src={imageSrc}
                             alt={`${caption} colorized image`}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-contain"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement
                               target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4='
@@ -150,13 +178,17 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
               {project.imageSets[2].captions.map((caption, index) => {
                 const imageName = project.imageSets[2].images[index];
+                const imageSrc = getImageUrl(project.folder, imageName);
                 return (
                   <div key={caption} className="flex flex-col">
-                    <div className="aspect-[4/3] rounded-lg overflow-hidden">
+                    <div 
+                      className="aspect-[4/3] rounded-lg overflow-hidden cursor-pointer"
+                      onClick={() => setModalImage({ src: imageSrc, alt: `${caption} comparison` })}
+                    >
                       <img
-                        src={getImageUrl(project.folder, imageName)}
+                        src={imageSrc}
                         alt={`${caption} comparison`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-contain"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement
                           target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4='
@@ -280,6 +312,14 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
           features={project.features}
         />
       </div>
+      
+      {/* Image Modal */}
+      <ImageModal
+        isOpen={modalImage !== null}
+        imageSrc={modalImage?.src || ''}
+        imageAlt={modalImage?.alt || ''}
+        onClose={() => setModalImage(null)}
+      />
     </BaseProject>
   )
 }
