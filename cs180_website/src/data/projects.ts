@@ -136,6 +136,12 @@ export const projectsData: Record<string, ProjectData> = {
         `,
         images: ['self_choice_Napoleon.jpg'],
         captions: ['Napoleon']
+      },
+      {
+        name: 'L-2 vs NCC Comparison',
+        description: `Comparison between L-2 norm and Normalized Cross-Correlation (NCC) alignment methods`,
+        images: ['L-2.jpg', 'NCC.jpg'],
+        captions: ['L-2 Norm Result', 'NCC Result']
       }
     ],
     technologies: ['Image Alignment', 'Channel Composition', 'Image Overlapping Criterion', 'Image Pyramid'],

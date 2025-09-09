@@ -139,7 +139,52 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
             </h3>
             <p className="text-[#666] dark:text-[#999] leading-relaxed">
               The core challenge was to align the three color channel images (Red, Green, Blue) to create a coherent color image. 
-              I implemented a pyramid-based alignment algorithm that works efficiently on both small and large images.
+              To do this, I use grid search to compare the overlapping score between each pair of frames (E.g., Blue with Red, Green with Red).
+              Then, I found the best vector displacement to move a frame to make the picture aligned. I primarily tried two metrics for scoring:
+              naive L-2 norm, and Normalized Cross-Correlation (NCC). L-2 Norm calculates way more faster but gives less desirable result, while NCC demonstrates
+              a slower computational efficiency, albeit the parallelism from Numpy and OpenCV, but way better result. The comparison for the same image aligning of a 
+              picture can be seen below.
+            </p>
+            
+            {/* L-2 vs NCC Comparison */}
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+              {project.imageSets[2].captions.map((caption, index) => {
+                const imageName = project.imageSets[2].images[index];
+                return (
+                  <div key={caption} className="flex flex-col">
+                    <div className="aspect-[4/3] rounded-lg overflow-hidden">
+                      <img
+                        src={getImageUrl(project.folder, imageName)}
+                        alt={`${caption} comparison`}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement
+                          target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4='
+                        }}
+                      />
+                    </div>
+                    <div className="mt-2 text-center">
+                      <span className="text-sm font-medium text-[#222] dark:text-[#e5e5e5]">
+                        {caption}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            <p className="text-[#666] dark:text-[#999] leading-relaxed mt-4">
+              <br />Nevertheless, grid search for both metrics are inefficient for larger images, such as those .tif files from the glass plate scan.
+              Therefore, I adopt a <a 
+                href="https://en.wikipedia.org/wiki/Pyramid_(image_processing)" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >pyramid-based alignment algorithm</a> that works efficiently on large images. In short, it begins by scaling the image to the coarest scale.
+              Then, it starts to find the best displacement vector. Thanks to the smaller image size, finding it is much faster. Then, this vector is recorded and scaled back
+              to the next level by multiplying it by 2 (which is the next scale in the pyramid). The next grid search begins with that coarse vector displacement
+              and a smaller grid size (as we are dealing with larger images at next scale). Repeat this for multiple times until the image is no longer scaled. I use
+              that final displacement vector as an alignment. For details on scaling factor, grid search radius, scaling options, please check the technical details
             </p>
           </div>
           
@@ -162,24 +207,33 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
             <ul className="space-y-2 text-[#666] dark:text-[#999]">
               <li className="flex items-start">
                 <span className="text-[#222] dark:text-[#e5e5e5] mr-2">•</span>
-                <span><strong>Image Pyramid:</strong> For large images, I used a multi-scale approach to speed up the alignment process</span>
+                <span><strong>Image Pyramid:
+                    </strong> For large images, I used a scale of 16x to original scale to fasten the grid search.</span>
               </li>
               <li className="flex items-start">
                 <span className="text-[#222] dark:text-[#e5e5e5] mr-2">•</span>
-                <span><strong>Similarity Metrics:</strong> Implemented normalized cross-correlation and structural similarity measures</span>
+                <span><strong>Image Scaling:
+                    </strong> I used 16x as a begining, as it would reduce even the 3000x3000~ tif image to around 300x300. Even for 2000s computer 
+                    they can still efficiently handle grid search at a usable speed. 
+                    For implementations, I called the most fundamental <a 
+                      href="https://opencv.org/blog/resizing-and-rescaling-images-with-opencv/" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >cv.resize from OpenCV</a> for image resizing, as per requirement says. 
+                    By default (which is what I used) it uses the average method to downsampling the image.</span>
               </li>
               <li className="flex items-start">
                 <span className="text-[#222] dark:text-[#e5e5e5] mr-2">•</span>
-                <span><strong>Search Strategy:</strong> Exhaustive search within a reasonable displacement range for optimal alignment</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#222] dark:text-[#e5e5e5] mr-2">•</span>
-                <span><strong>Edge Cropping:</strong> Automatic removal of border artifacts to improve alignment accuracy</span>
+                <span><strong>Dynamic Grid Searching:
+                    </strong> Because I scaled the image to different sizes each time, I dynamically reduce the grid search radius for 
+                    computation efficieny. At the scale of 16, I begin with a radius of 30, then I gradually reduce it to 10 to ensure that the 
+                    search is efficient as I am dealing with larger image (less scaling)</span>
               </li>
             </ul>
           </div>
 
-          <div>
+          {/* <div>
             <h3 className="text-lg font-medium text-[#222] dark:text-[#e5e5e5] mb-3">
               Technical Implementation
             </h3>
@@ -188,13 +242,15 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
               The algorithm automatically detects the best alignment parameters for each image pair, handling various lighting conditions 
               and image qualities present in the historical Prokudin-Gorskii collection.
             </p>
-          </div>
+          </div> */}
 
           <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <h4 className="font-medium text-[#222] dark:text-[#e5e5e5] mb-2">Performance Notes</h4>
             <p className="text-sm text-[#666] dark:text-[#999]">
               The pyramid approach reduces computational complexity from O(n²) to O(n log n) for large images, 
-              while maintaining high alignment accuracy. Some images like "Emir" required special handling due to 
+              while maintaining high alignment accuracy. Before applying the image pyramid, for a large tif image of 3000x3000~ size,
+              using NCC metrics would take around two minutes. Now it only takes less than 10 seconds.
+              To be noticed, Some images like "Emir" required special handling due to 
               clothing color variations that affected standard correlation metrics.
             </p>
           </div>
