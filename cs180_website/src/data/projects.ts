@@ -89,7 +89,7 @@ export const projectsData: Record<string, ProjectData> = {
     longDescription: `This projects the fundamentals in image and pixel manipulations. The goal was to recover a color image from the 
     black and white frames that are taken under Red, Green, and Blue filter. It explores the fundamental operation such as image alignment, channel composing, overlapping algorithmns, and use of Industrial-level computer vision library.`,
     folder: 'project1',
-    image: 'cathedral.jpg', // fallback image
+    image: 'prj1_thumbnail.png', // fallback image
     images: [],
     thumbnailType: 'composite',
     imageSets: [
@@ -132,8 +132,16 @@ export const projectsData: Record<string, ProjectData> = {
       {
         name: 'Self-selected Image',
         description: `These are the images I selected from Prokudin-Gorskii collection. The composing algorithmn also works decent on them!`,
-        images: ['self_choice_Napoleon.jpg'],
-        captions: ['Napoleon']
+        images: ['self_choice_Napoleon.jpg',
+            'Liesnaia_doroga.jpg',
+            'crumbling_mosque.jpg',
+            'by_the_Gundukush_dam.jpg'
+        ],
+        captions: ['Napoleon',
+          'Liesnaia_doroga',
+          'The crumbling Mosque',
+          'By the Gundukush dam'
+        ]
       },
       {
         name: 'L-2 vs NCC Comparison',

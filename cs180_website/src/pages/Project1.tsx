@@ -72,7 +72,7 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
             href="https://www.loc.gov/collections/prokudin-gorskii/?st=grid" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="text-blue-600 dark:text-blue-400 hover:underline"
+            className="underline text-[#222] dark:text-[#e5e5e5] mx-1"
           >
             Prokudin-Gorskii photo collection
           </a>. Note that for some images the performance is great, yet for some there are spaces to improve.
@@ -119,19 +119,19 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
             href="https://www.loc.gov/collections/prokudin-gorskii/?st=grid" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="text-blue-600 dark:text-blue-400 hover:underline"
+            className="underline text-[#222] dark:text-[#e5e5e5] mx-1"
           >
             Prokudin-Gorskii collection
           </a>. The composing algorithmn also works decent on them!
         </p>
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {project.imageSets[1].captions.map((caption, index) => {
                     const imageName = project.imageSets[1].images[index];
                     const imageSrc = getImageUrl(project.folder, imageName);
                     return (
                       <div key={caption} className="flex flex-col">
                         <div 
-                          className="aspect-[4/3] rounded-lg overflow-hidden max-w-md mx-auto cursor-pointer"
+                          className="aspect-[4/3] rounded-lg overflow-hidden cursor-pointer"
                           onClick={() => setModalImage({ src: imageSrc, alt: `${caption} colorized image` })}
                         >
                           <img
@@ -211,7 +211,7 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
                 href="https://en.wikipedia.org/wiki/Pyramid_(image_processing)" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-blue-600 dark:text-blue-400 hover:underline"
+                className="underline text-[#222] dark:text-[#e5e5e5] mx-1"
               >pyramid-based alignment algorithm</a> that works efficiently on large images. In short, it begins by scaling the image to the coarest scale.
               Then, it starts to find the best displacement vector. Thanks to the smaller image size, finding it is much faster. Then, this vector is recorded and scaled back
               to the next level by multiplying it by 2 (which is the next scale in the pyramid). The next grid search begins with that coarse vector displacement
@@ -251,7 +251,7 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
                       href="https://opencv.org/blog/resizing-and-rescaling-images-with-opencv/" 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                      className="underline text-[#222] dark:text-[#e5e5e5] mx-1"
                     >cv.resize from OpenCV</a> for image resizing, as per requirement says. 
                     By default (which is what I used) it uses the average method to downsampling the image.</span>
               </li>
@@ -284,6 +284,8 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
               using NCC metrics would take around two minutes. Now it only takes less than 10 seconds.
               To be noticed, Some images like "Emir" required special handling due to 
               clothing color variations that affected standard correlation metrics.
+            <br />However, as it can be seen that there are some images still not perfectly aligned. It might be due to the radius of the Grid search: the optimal
+            displacement sometimes lies outside the radius! Nevertheless, for most of the images, the alignments are fairly effective!
             </p>
           </div>
         </div>
