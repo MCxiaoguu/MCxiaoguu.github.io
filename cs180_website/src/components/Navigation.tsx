@@ -50,7 +50,7 @@ const Navigation: React.FC<NavigationProps> = ({ isDark, toggleTheme }) => {
                 href="https://hanyanggu.com" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block font-thin text-[24px] text-[#222] dark:text-[#e5e5e5] py-[14px] px-[14px] no-underline hover:bg-[#f3f3f3] dark:hover:bg-[#333] bg-transparent"
+                className="block font-thin text-[24px] text-[#222] dark:text-[#e5e5e5] py-[14px] px-[14px] no-underline hover:bg-[#f3f3f3] dark:hover:bg-[#333] bg-transparent" 
               >
                 Personal Homepage
               </a>

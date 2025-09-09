@@ -71,7 +71,7 @@ export const generateCompositeThumbnail = async (
   })
 }
 
-// Generate thumbnail for Project 1
+// Generate thumbnail for Project 0
 export const generateProject1Thumbnail = async (): Promise<string> => {
   const selectedImages = ['9mm.JPG', '28mm.JPG', '135mm.JPG', '800mm.JPG']
   const captions = ['9mm', '28mm', '135mm', '800mm']

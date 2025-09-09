@@ -106,7 +106,7 @@ export const ProjectSidebar: React.FC<ProjectSidebarProps> = ({
           {technologies.map((tech) => (
             <span
               key={tech}
-              className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-[#666] dark:text-[#999] text-sm rounded-md font-['Inter']"
+              className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-[#666] dark:text-[#999] text-sm rounded-md"
             >
               {tech}
             </span>

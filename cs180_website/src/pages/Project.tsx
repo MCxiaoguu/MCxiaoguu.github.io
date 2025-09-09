@@ -4,6 +4,7 @@ import { projectsData } from '../data/projects'
 import Navigation from '../components/Navigation'
 import { Footer } from '../components/Footer'
 import { PageTransition } from '../components/PageTransition'
+import Project0 from './Project0'
 import Project1 from './Project1'
 import ProjectTemplate from '../components/ProjectTemplate'
 
@@ -66,10 +67,10 @@ const Project: React.FC<ProjectProps> = ({ isDark, toggleTheme }) => {
   // Route to specific project pages
   switch (projectId) {
     case '1':
-      return <Project1 isDark={isDark} toggleTheme={toggleTheme} />
+      return <Project0 isDark={isDark} toggleTheme={toggleTheme} />
     // Add more specific project pages here as they're created
-    // case '2':
-    //   return <Project2 isDark={isDark} toggleTheme={toggleTheme} />
+    case '2':
+       return <Project1 isDark={isDark} toggleTheme={toggleTheme} />
     // case '3':
     //   return <Project3 isDark={isDark} toggleTheme={toggleTheme} />
     default:
