@@ -94,6 +94,53 @@ export const projectsData: Record<string, ProjectData> = {
     thumbnailType: 'composite',
     imageSets: [
       {
+        name: 'Slicing the images',
+        description: 'Fill in according to algorithmn details',
+        images:[
+          'siren_jpg.jpg',
+          'siren_blue_channel.jpg',
+          'siren_green_channel.jpg',
+          'siren_red_channel.jpg',
+        ],
+        captions:[
+          'Before Slicing',
+          'Blue channel',
+          'Green channel',
+          'red channel'
+        ]
+      },
+      {
+        name: 'Applying Gaussian and Sobel Kernels',
+        description: 'Fill in according to algorithmn details',
+        images:[
+          'siren_blue_channel.jpg',
+          'Gaussian + Sobel for Blue channel of siren'
+        ],
+        captions:[
+          'Left: Before Applying Gaussian and Solbel kernel',
+          'Right: After applying Sobel'
+        ]
+      },
+      {
+        name: 'With or Without gradient: A Comparison',
+        description: 'Different result when use with or without gradient',
+        images:[
+          'siren_bad.jpg',
+          'siren.jpg'
+        ],
+        captions:[
+          'Left: failed to properly align when use without a gradient filtering. This is primarily beecause of the glare in the original frames',
+          'Right: The use of gradient and contour isolation eliminiates the disruption from brightness difference in raw pixel value'
+        ]
+      },
+      {
+        name: 'L-2 vs NCC Comparison',
+        description: `Comparison between L-2 norm and Normalized Cross-Correlation (NCC) alignment methods`,
+        images: ['L-2.jpg', 'NCC.jpg'],
+        captions: ['L-2 Norm Result, the displacement vectors are (810, 810) and (-6, 34)', 
+          'NCC Result, the displacement vectors are (-6, 58) and (-4, 34)']
+      },
+      {
         name: 'Channel Composition on Given Images',
         description: `Below are the all 14 composed Images based on the algorithmn I developed from the Prokudin-Gorskii photo collection. Note that for some images the performance is great, yet for some there are spaces to improve. 
         The displacement vector is included and in format of (x,y), where (0,0) represents the top left corner.The first vector presents the displacement
@@ -146,13 +193,6 @@ export const projectsData: Record<string, ProjectData> = {
           'The crumbling Mosque - Displacement vectors (10, 70) and (0, 44)',
           'By the Gundukush dam - Displacement vectors (-60, 132) and (-28, 74)'
         ]
-      },
-      {
-        name: 'L-2 vs NCC Comparison',
-        description: `Comparison between L-2 norm and Normalized Cross-Correlation (NCC) alignment methods`,
-        images: ['L-2.jpg', 'NCC.jpg'],
-        captions: ['L-2 Norm Result, the displacement vectors are (810, 810) and (-6, 34)', 
-          'NCC Result, the displacement vectors are (-6, 58) and (-4, 34)']
       }
     ],
     technologies: ['Image Alignment', 'Channel Composition', 'Image Overlapping Criterion', 'Image Pyramid'],

@@ -19,7 +19,8 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
 
   // Mermaid flowchart from prj1_alg.md
   const algorithmFlowchart = `flowchart TD
-    A[Image Slicing] -->|Split into B, G, R channels based on row offsets| B(Alignment)
+    A[Image Slicing] -->|Split into B, G, R channels based on row offsets| X(Convolution)
+    X --> |Use Gaussian and Sobel Kernel to avoid brightness and contrast difference from raw pixel| B(Alignment)
     B --> |Image is Large| D[Build Image Pyramid]
     B --> |Image is Small| Z[Compose RGB Image]
 
@@ -231,6 +232,19 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
               Algorithm Details
             </h3>
             <ul className="space-y-2 text-[#666] dark:text-[#999]">
+              <li className="flex items-start">
+                <span className="text-[#222] dark:text-[#e5e5e5] mr-2">•</span>
+                <span>
+                  <span className="font-bold font-sans">Convolution:</span> Because the pixel brightness (density) and overall contrast drastically differ among
+                  frames, I chose to plot the contour through convolving with two kernels. I firsted applied the Gaussian 3x3 kernel of ([1,2,1],[2,4,2],[1,2,1]), and then I 
+                  calculated the gradiant in both x and y direction using sobel kernel ([-1, 0,  1],
+        [-2, 0,  2],
+        [-1, 0,  1]) and ([-1, -2, -1],
+        [ 0,  0,  0],
+        [ 1,  2,  1]) respectively. With this, I am able to extract the contour and therefore minimize the distraction from varying density. By introducing this improvement,
+        it helps me to tackle the last few images, including Emir, that were previously challenging to aligned. 
+                </span>
+              </li>
               <li className="flex items-start">
                 <span className="text-[#222] dark:text-[#e5e5e5] mr-2">•</span>
                 <span>
