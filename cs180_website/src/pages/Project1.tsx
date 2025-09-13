@@ -188,34 +188,61 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
               }`}>
                 <div className="space-y-6">
                   {step.description.split('\n\n').map((paragraph: string, pIndex: number) => {
-                    if (paragraph.includes('$$')) {
-                      const parts = paragraph.split('$$')
-                      return (
-                        <div key={pIndex} className="space-y-4">
-                          {parts.map((part, partIndex) => {
-                            if (partIndex % 2 === 1) {
-                              return (
-                                <div key={partIndex} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg flex justify-center">
-                                  {renderFormula(part, true)}
-                                </div>
-                              )
-                            } else {
-                              return part.trim() ? (
-                                <p key={partIndex} className="text-[#666] dark:text-[#999] leading-relaxed">
-                                  {part}
-                                </p>
-                              ) : null
-                            }
-                          })}
-                        </div>
-                      )
-                    } else {
-                      return (
-                        <p key={pIndex} className="text-[#666] dark:text-[#999] leading-relaxed">
-                          {paragraph}
-                        </p>
-                      )
+                    // Process mixed inline and block LaTeX
+                    const processLatex = (text: string) => {
+                      // First, handle block formulas ($$...$$)
+                      const blockParts = text.split('$$')
+                      const elements: JSX.Element[] = []
+                      
+                      blockParts.forEach((part, blockIndex) => {
+                        if (blockIndex % 2 === 1) {
+                          // This is a block formula
+                          elements.push(
+                            <div key={`block-${blockIndex}`} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg flex justify-center">
+                              {renderFormula(part, true)}
+                            </div>
+                          )
+                        } else {
+                          // This is regular text, but may contain inline formulas
+                          if (part.trim()) {
+                            const inlineParts = part.split('$')
+                            const inlineElements: (string | JSX.Element)[] = []
+                            
+                            inlineParts.forEach((inlinePart, inlineIndex) => {
+                              if (inlineIndex % 2 === 1) {
+                                // This is an inline formula
+                                inlineElements.push(
+                                  <span key={`inline-${inlineIndex}`} className="inline-block">
+                                    {renderFormula(inlinePart, false)}
+                                  </span>
+                                )
+                              } else {
+                                // Regular text
+                                if (inlinePart) {
+                                  inlineElements.push(inlinePart)
+                                }
+                              }
+                            })
+                            
+                            elements.push(
+                              <p key={`text-${blockIndex}`} className="text-[#666] dark:text-[#999] leading-relaxed">
+                                {inlineElements.map((element, idx) => 
+                                  typeof element === 'string' ? element : element
+                                )}
+                              </p>
+                            )
+                          }
+                        }
+                      })
+                      
+                      return elements
                     }
+
+                    return (
+                      <div key={pIndex} className="space-y-4">
+                        {processLatex(paragraph)}
+                      </div>
+                    )
                   })}
                 </div>
               </div>
@@ -279,32 +306,63 @@ const Project1: React.FC<Project1Props> = ({ isDark, toggleTheme }) => {
               }`}>
                 <div className="space-y-4">
                   {step.description.split('\n\n').map((paragraph: string, pIndex: number) => {
-                    if (paragraph.includes('$$')) {
-                      const parts = paragraph.split('$$')
-                      return (
-                        <div key={pIndex} className="space-y-4">
-                          {parts.map((part, partIndex) => {
-                            if (partIndex % 2 === 1) {
-                              return (
-                                <div key={partIndex} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg flex justify-center my-4">
-                                  {renderFormula(part, true)}
-                                </div>
-                              )
-                            } else {
-                              return part.trim() ? (
-                                <p key={partIndex} className="text-[#666] dark:text-[#999] leading-relaxed mb-4" 
-                                   dangerouslySetInnerHTML={{ __html: part.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
-                              ) : null
-                            }
-                          })}
-                        </div>
-                      )
-                    } else {
-                      return (
-                        <p key={pIndex} className="text-[#666] dark:text-[#999] leading-relaxed" 
-                           dangerouslySetInnerHTML={{ __html: paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
-                      )
+                    // Process mixed inline and block LaTeX
+                    const processLatex = (text: string) => {
+                      // First, handle block formulas ($$...$$)
+                      const blockParts = text.split('$$')
+                      const elements: JSX.Element[] = []
+                      
+                      blockParts.forEach((part, blockIndex) => {
+                        if (blockIndex % 2 === 1) {
+                          // This is a block formula
+                          elements.push(
+                            <div key={`block-${blockIndex}`} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg flex justify-center my-4">
+                              {renderFormula(part, true)}
+                            </div>
+                          )
+                        } else {
+                          // This is regular text, but may contain inline formulas
+                          if (part.trim()) {
+                            const inlineParts = part.split('$')
+                            const inlineElements: (string | JSX.Element)[] = []
+                            
+                            inlineParts.forEach((inlinePart, inlineIndex) => {
+                              if (inlineIndex % 2 === 1) {
+                                // This is an inline formula
+                                inlineElements.push(
+                                  <span key={`inline-${inlineIndex}`} className="inline-block">
+                                    {renderFormula(inlinePart, false)}
+                                  </span>
+                                )
+                              } else {
+                                // Regular text
+                                if (inlinePart) {
+                                  inlineElements.push(inlinePart.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'))
+                                }
+                              }
+                            })
+                            
+                            elements.push(
+                              <p key={`text-${blockIndex}`} className="text-[#666] dark:text-[#999] leading-relaxed mb-4">
+                                {inlineElements.map((element, idx) => 
+                                  typeof element === 'string' ? 
+                                    <span key={idx} dangerouslySetInnerHTML={{ __html: element }} /> : 
+                                    element
+                                )}
+                              </p>
+                            )
+                          }
+                        }
+                      })
+                      
+                      return elements
                     }
+
+                    return (
+                      <div key={pIndex} className="space-y-4">
+                        {processLatex(paragraph)}
+                      </div>
+                    )
                   })}
                 </div>
               </div>
