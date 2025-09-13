@@ -94,8 +94,8 @@ export const projectsData: Record<string, ProjectData> = {
     thumbnailType: 'composite',
     imageSets: [
       {
-        name: 'Slicing the images',
-        description: 'Fill in according to algorithmn details',
+        name: 'Step 1: Image Slicing',
+        description: 'The first step is to extract the three color channels from the grayscale composite image. Since the Prokudin-Gorskii images are vertically stacked (Blue, Green, Red from top to bottom), we slice the image into three equal parts by height. Each slice becomes a separate channel that will be aligned and combined.',
         images:[
           'siren_jpg.jpg',
           'siren_blue_channel.jpg',
@@ -103,42 +103,61 @@ export const projectsData: Record<string, ProjectData> = {
           'siren_red_channel.jpg',
         ],
         captions:[
-          'Before Slicing',
+          'Original composite image with three channels stacked vertically',
           'Blue channel',
           'Green channel',
-          'red channel'
+          'Red channel'
         ]
       },
       {
-        name: 'Applying Gaussian and Sobel Kernels',
-        description: 'Fill in according to algorithmn details',
+        name: 'Step 2: Applying Image Processing Kernels',
+        description: `To improve alignment accuracy, we apply convolution kernels to extract image features that are less sensitive to brightness variations. First, we apply a Gaussian blur kernel:
+
+$$\\text{Gaussian} = \\frac{1}{16} \\begin{bmatrix} 1 & 2 & 1 \\\\ 2 & 4 & 2 \\\\ 1 & 2 & 1 \\end{bmatrix}$$
+
+Then we compute gradients using Sobel operators:
+
+$$\\text{Sobel}_x = \\begin{bmatrix} -1 & 0 & 1 \\\\ -2 & 0 & 2 \\\\ -1 & 0 & 1 \\end{bmatrix}, \\quad \\text{Sobel}_y = \\begin{bmatrix} -1 & -2 & -1 \\\\ 0 & 0 & 0 \\\\ 1 & 2 & 1 \\end{bmatrix}$$
+
+This helps extract contour information while reducing the impact of varying illumination conditions. Note that the images on the right use NCC for alignment criterion`,
         images:[
           'siren_blue_channel.jpg',
-          'Gaussian + Sobel for Blue channel of siren'
+          'Gaussian + Sobel for Blue channel of siren.jpg'
         ],
         captions:[
-          'Left: Before Applying Gaussian and Solbel kernel',
-          'Right: After applying Sobel'
+          'Original blue channel with varying brightness',
+          'After Gaussian blur and Sobel edge detection - contours are emphasized'
         ]
       },
       {
-        name: 'With or Without gradient: A Comparison',
-        description: 'Different result when use with or without gradient',
+        name: 'Step 3: The Power of Gradient-Based Alignment',
+        description: 'This comparison demonstrates why gradient-based features are crucial for accurate alignment. Raw pixel values can be misleading due to different exposure conditions, reflections, and lighting variations between the color channels. By using edge information instead, we focus on structural features that remain consistent across channels.',
         images:[
           'siren_bad.jpg',
           'siren.jpg'
         ],
         captions:[
-          'Left: failed to properly align when use without a gradient filtering. This is primarily beecause of the glare in the original frames',
-          'Right: The use of gradient and contour isolation eliminiates the disruption from brightness difference in raw pixel value'
+          'Without gradient filtering: Misalignment due to brightness differences and glare',
+          'With gradient filtering: Proper alignment by focusing on structural edges'
         ]
       },
       {
-        name: 'L-2 vs NCC Comparison',
-        description: `Comparison between L-2 norm and Normalized Cross-Correlation (NCC) alignment methods`,
+        name: 'Step 4: Choosing the Right Similarity Metric',
+        description: `Two different metrics were tested for measuring image similarity during alignment:
+
+**L2 Norm (Euclidean Distance):** Fast but less robust to illumination changes
+$$\\text{L2}(I_1, I_2) = \\sqrt{\\sum_{i,j} (I_1(i,j) - I_2(i,j))^2}$$
+
+**Normalized Cross-Correlation (NCC):** Slower but more robust to brightness variations
+$$\\vec{A} = \\frac{A - \\mu_A}{\\sigma_A + \\epsilon}, \\quad \\vec{B} = \\frac{B - \\mu_B}{\\sigma_B + \\epsilon}$$
+$$\\text{NCC}(A, B) = \\frac{\\vec{A} \\cdot \\vec{B}}{\\|\\vec{A}\\| \\|\\vec{B}\\| + \\epsilon}$$
+
+where $\\mu$ and $\\sigma$ are mean and standard deviation, and $\\epsilon = 10^{-8}$ prevents division by zero.
+
+NCC provides significantly better results despite higher computational cost.`,
         images: ['L-2.jpg', 'NCC.jpg'],
-        captions: ['L-2 Norm Result, the displacement vectors are (810, 810) and (-6, 34)', 
-          'NCC Result, the displacement vectors are (-6, 58) and (-4, 34)']
+        captions: ['L2 Norm: Poor alignment with displacement vectors (810, 810) and (-6, 34)', 
+          'NCC: Accurate alignment with displacement vectors (-6, 58) and (-4, 34)']
       },
       {
         name: 'Channel Composition on Given Images',
@@ -195,12 +214,15 @@ export const projectsData: Record<string, ProjectData> = {
         ]
       }
     ],
-    technologies: ['Image Alignment', 'Channel Composition', 'Image Overlapping Criterion', 'Image Pyramid'],
+    technologies: ['Image Alignment', 'Channel Composition', 'Convolution', 'Image Pyramid', 'Image Overlapping Criterion'],
     demoUrl: 'https://example.com',
     githubUrl: 'https://github.com/yourusername/project1',
     features: [
       'Image Pyramid',
       'OpenCV',
+      'Gaussian',
+      'Sobel',
+      'Convolution',
       'Image Alignment and Cropping'
     ]
   }
