@@ -116,19 +116,19 @@ export const projectsData: Record<string, ProjectData> = {
         ],
         captions: [
           'Cathedral - Displacement vectors are (0, 12) and (0, 8)',
-          'Church - Displacement vectors are (-6, 58) and (-4, 34)',
-          'Emir - Displacement vectors are (-16, 114) and (-8, 112)',
-          'Harvesters - Displacement vectors are (0, 156) and (-2, 66)',
-          'Icon - Displacement vectors are (22, 90) and (4, 48)',
-          'Italian Lake - Displacement vectors are (34, 78) and (14, 38)',
-          'Lastochikino - Displacement vectors are (0, 222) and (-4, 78)',
+          'Church - Displacement vectors are (-14, 62) and (-8, 34)',
+          'Emir - Displacement vectors are (40, 106) and (16, 58)',
+          'Harvesters - Displacement vectors are (4, 124) and (-4, 64)',
+          'Icon - Displacement vectors are (22, 90) and (6, 48)',
+          'Italian Lake - Displacement vectors are (36, 76) and (14, 38)',
+          'Lastochikino - Displacement vectors are (-8, 76) and (-6, 78)',
           'Lugano - Displacement vectors are (-28, 92) and (-12, 52)',
-          'Melons - Displacement vectors are (-8, 180) and (2, 96)',
-          'Monastery - Displacement vectors are (0, 10) and (0, 6)',
-          'Self Portrait - Displacement vectors are (-2, 180) and (6, 98)',
-          'Siren - Displacement vectors are (-20, 98) and (-16, 46)',
-          'Three Generations - Displacement vectors are (-8, 114) and (0, 58)',
-          'Tobolsk - Displacement vectors are (2, 6) and (0, 4)'
+          'Melons - Displacement vectors are (10, 176) and (4, 96)',
+          'Monastery - Displacement vectors are (0, 4) and (0, 6)',
+          'Self Portrait - Displacement vectors are (36, 176) and (8, 98)',
+          'Siren - Displacement vectors are (-16, 766) and (-18, 46)',
+          'Three Generations - Displacement vectors are (8, 112) and (2, 58)',
+          'Tobolsk - Displacement vectors are (4, 6) and (0, 4)'
         ]
       },
       {
@@ -141,10 +141,10 @@ export const projectsData: Record<string, ProjectData> = {
             'crumbling_mosque.jpg',
             'by_the_Gundukush_dam.jpg'
         ],
-        captions: ['Napoleon - Displacement vectors (-4, 154) and (0, 100)',
+        captions: ['Napoleon - Displacement vectors (0, 132) and (-4, 70)',
           'Liesnaia_doroga - Displacement vectors (4, 100) and (36, 58)',
-          'The crumbling Mosque - Displacement vectors (8, 72) and (0, 44)',
-          'By the Gundukush dam - Displacement vectors (-20, 134) and (-8, 62)'
+          'The crumbling Mosque - Displacement vectors (10, 70) and (0, 44)',
+          'By the Gundukush dam - Displacement vectors (-60, 132) and (-28, 74)'
         ]
       },
       {
