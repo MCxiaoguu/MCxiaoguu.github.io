@@ -292,7 +292,18 @@ In general, the two-for loop approach is faster because it utilizes the vectoriz
             language: "python",
             filename: "convolution_four_loops.py",
             description: "Four-loop convolution: Direct implementation following mathematical definition",
-            code: `def convolution_four(image, kernel):
+            code: `def padding(image, pad_y, pad_x):
+    img_y, img_x = image.shape  
+    top_pad = np.zeros((pad_y, img_x))
+    bottom_pad = np.zeros((pad_y, img_x))
+    padded = np.concatenate((top_pad, image, bottom_pad), axis=0)
+    
+    left_pad = np.zeros((padded.shape[0], pad_x))
+    right_pad = np.zeros((padded.shape[0], pad_x))    
+    padded = np.concatenate((left_pad, padded, right_pad), axis=1)
+
+    return padded
+def convolution_four(image, kernel):
     img_y, img_x = image.shape 
     k_y, k_x = kernel.shape # kernel height, width
     pad_y, pad_x = k_y // 2, k_x // 2
