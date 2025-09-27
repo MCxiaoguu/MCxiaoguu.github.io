@@ -400,6 +400,7 @@ It can be observed that the result from both approaches are almost identical, th
 4. **Threshold selection:** Balance between noise suppression and edge preservation
 
 The choice of threshold is critical - too low includes noise, too high misses important edges.`,
+
         images: ["grad_after_gaussian.jpg","derivative_of_gaussian.jpg"],
         captions: ["Approach 1: Gradient after Gaussian smoothing", "Approach 2: Direct Derivative of Gaussian filters"],
         code: []
@@ -452,6 +453,13 @@ Where δ is the impulse function and G is the Gaussian kernel.
             that is not susceptible to sharpening/blurring.`,
             images: ["straight_sharpened_taj_alpha_5.jpg", "sharpen_after_blur_alpha_5.jpg", "sharpen_after_blur_alpha_20.jpg"],
             captions: ["Original sharp image (α=5)", "Sharpen After Gaussian blur (σ=5)", "Sharpen After Gaussian blur (σ=20)"]
+          },
+          {
+            name: 'Sharpening Picture of Choice: Historic Image of Wheeler Hall',
+            description: `Application of unsharp masking to a historic image of Wheeler Hall demonstrates the technique's effectiveness on architectural photography. The historic nature of the image provides interesting challenges due to the original image quality and characteristics of older photography techniques.`,
+            images: ["wheeler_straight_sharpened_taj_alpha_1.jpg", "wheeler_straight_sharpened_taj_alpha_10.jpg", "wheeler_straight_sharpened_taj_alpha_50.jpg"],
+            captions: ["Wheeler Hall sharpened with α=1 - Subtle enhancement", "Wheeler Hall sharpened with α=10 - Moderate sharpening", "Wheeler Hall sharpened with α=50 - Strong sharpening with visible artifacts"],
+            code: []
           }
         ]
       },
