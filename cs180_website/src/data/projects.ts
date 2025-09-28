@@ -604,7 +604,7 @@ The key insight is that different spatial frequencies require different blending
       },
       {
         name: 'Additional Examples of Multi-resolution Blending (Set 2)',
-        description: `Here are two set of pictures I've blended using the multi-resolution blending technique. The first set is a blend between a cat and a dog, while the second set is a blend between Yuhua and a dog/cat.`,
+        description: `Here are two set of pictures I've blended using the multi-resolution blending technique. The first set is a blend between a cat and a dog.`,
         images: ["dachshund_headshot.jpg", "border_collie_for_blending.jpg", "two_dogs.jpg", "dogs_mask.jpg"],
         captions: ["Dachshund headshot", "Border collie for blending", "Blended Result", "Mask used for blending"],
       }
