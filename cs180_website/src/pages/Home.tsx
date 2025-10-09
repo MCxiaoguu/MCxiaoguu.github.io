@@ -74,7 +74,7 @@ const Home: React.FC<HomeProps> = ({ isDark, toggleTheme }) => {
       </ul>
 
       {/* Description text - mimicking your homepage_img_description */}
-      <div className="homepage_img_description my-[10px] font-thin text-[#222] dark:text-[#e5e5e5]">
+      <div className="homepage_img_description mt-[100px] my-[10px] font-thin text-[#222] dark:text-[#e5e5e5]">
         Welcome to my 
         <a 
         href="https://cal-cs180.github.io/fa25/" 

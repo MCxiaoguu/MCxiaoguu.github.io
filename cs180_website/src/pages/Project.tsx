@@ -8,6 +8,7 @@ import Project0 from './Project0'
 import Project1 from './Project1'
 import Project2 from './Project2'
 import ProjectTemplate from '../components/ProjectTemplate'
+import Project3 from './Project3'
 
 interface ProjectProps {
   isDark: boolean
@@ -74,6 +75,8 @@ const Project: React.FC<ProjectProps> = ({ isDark, toggleTheme }) => {
        return <Project1 isDark={isDark} toggleTheme={toggleTheme} />
     case '3':
       return <Project2 isDark={isDark} toggleTheme={toggleTheme} />
+    case '4':
+      return <Project3 isDark={isDark} toggleTheme={toggleTheme} />
     default:
       // Fallback to template for projects without custom pages
       return <ProjectTemplate isDark={isDark} toggleTheme={toggleTheme} projectId={projectId} />

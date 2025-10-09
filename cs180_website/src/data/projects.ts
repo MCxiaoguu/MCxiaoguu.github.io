@@ -623,6 +623,323 @@ The key insight is that different spatial frequencies require different blending
       'Multi-resolution Blending'
     ]
   }
+  ,
+  '4': {
+    id: '4',
+    title: 'Project 3',
+    title_des: 'Image Warping and Mosaicing',
+    description: 'Homographies, Image Warping, and Photo Mosaics',
+    longDescription: ``,
+    folder: 'project3',
+    image: '',
+    images: [],
+    thumbnailType: 'single',
+    imageSets: [
+      {
+        name: 'A.1: Shoot the Pictures',
+        description: `We capture image pairs suitable for homography estimation.
+
+• Same center of projection: two landscapes captured from the same location with small rotational changes.
+• Different viewpoints: two photos of the same indoor scene taken from different angles, introducing perspective changes.`,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: 'Same Center of Projection (Landscape Pair)',
+            description: `Two landscapes shot from the same position. Photos are taken at Big Sur, CA`,
+            images: ['big_sur_left.jpg', 'big_sur_right.jpeg'],
+            captions: [
+              'Big Sur (left view, same COP)',
+              'Big Sur (right view, same COP)'
+            ]
+          },
+          {
+            name: 'Same Center of Projection',
+            description: 'Another set of images share the same COP',
+            images: ['ehub_left.jpg', 'ehub_right.jpg'],
+            captions: [
+              'Interior A (viewpoint 1)',
+              'Interior B (viewpoint 2)'
+            ]
+          }
+        ]
+      },
+      {
+        name: 'A.2: Recover Homographies',
+        description: `We estimate a homography H that maps homogeneous source coordinates x = [x, y, 1]^T to destination x' = [x', y', 1]^T up to scale:
+
+$$s \\begin{bmatrix} x' \\\\ y' \\\\ 1 \\end{bmatrix} =
+H \\begin{bmatrix} x \\\\ y \\\\ 1 \\end{bmatrix},\\quad
+H = \\begin{bmatrix}
+h_{11} & h_{12} & h_{13} \\\\
+h_{21} & h_{22} & h_{23} \\\\
+h_{31} & h_{32} & h_{33}
+\\end{bmatrix}.$$
+
+From point correspondences $(x, y) \\leftrightarrow (x', y')$, we derive two linear equations per correspondence (DLT):
+
+$$\\begin{aligned}
+x' &= \\frac{h_{11}x + h_{12}y + h_{13}}{h_{31}x + h_{32}y + h_{33}},\\\\
+y' &= \\frac{h_{21}x + h_{22}y + h_{23}}{h_{31}x + h_{32}y + h_{33}}.
+\\end{aligned}$$
+
+Multiply both sides by the denominator to eliminate fractions:
+
+$$\\begin{aligned}
+x'(h_{31}x + h_{32}y + h_{33}) &= h_{11}x + h_{12}y + h_{13},\\\\
+y'(h_{31}x + h_{32}y + h_{33}) &= h_{21}x + h_{22}y + h_{23}.
+\\end{aligned}$$
+
+Expand both equations:
+
+
+$$\\begin{aligned}
+h_{11}x + h_{12}y + h_{13} - x'h_{31}x - x'h_{32}y - x'h_{33} &= 0,\\\\
+h_{21}x + h_{22}y + h_{23} - y'h_{31}x - y'h_{32}y - y'h_{33} &= 0.
+\\end{aligned}$$
+
+Rearrange to group coefficients of each unknown:
+
+
+$$\\begin{aligned}
+x h_{11} + y h_{12} + 1 h_{13} + 0 h_{21} + 0 h_{22} + 0 h_{23}
+ - x x' h_{31} - y x' h_{32} - x' h_{33} &= 0,\\\\
+0 h_{11} + 0 h_{12} + 0 h_{13} + x h_{21} + y h_{22} + 1 h_{23}
+ - x y' h_{31} - y y' h_{32} - y' h_{33} &= 0.
+\\end{aligned}$$
+
+This gives two linear equations per correspondence, which can be stacked as:
+
+$$\\begin{bmatrix}
+x & y & 1 & 0 & 0 & 0 & -xx' & -yx' & -x' \\\\
+0 & 0 & 0 & x & y & 1 & -xy' & -yy' & -y' 
+\\end{bmatrix}
+\\begin{bmatrix}
+h_{11} \\\\ h_{12} \\\\ h_{13} \\\\ h_{21} \\\\ h_{22} \\\\ h_{23} \\\\ h_{31} \\\\ h_{32} \\\\ h_{33}
+\\end{bmatrix}
+= \\mathbf{0}.$$
+
+Computed Homography matrix for image set below:
+$$H = \\begin{bmatrix}
+            1.54 & -0.12 & -581.57 \\\\
+            0.31 & 1.36 & -153.22 \\\\
+            0.00 & -0.00 & 1.00
+\\end{bmatrix}$$
+It comes from letting the computer solve the system of equations using the least square.:
+Note that we use (0,0) on the top-left corner as the convention here and throughout this project.
+$$\\begin{aligned}
+\\textbf{(1)}\\quad
+x'_1 &= h_{11}(807.38) + h_{12}(12.39) + h_{13} \\approx 660.30,\\\\
+y'_1 &= h_{21}(807.38) + h_{22}(12.39) + h_{23} \\approx 113.91;\\\\[6pt]
+
+\\textbf{(2)}\\quad
+x'_2 &= h_{11}(748.83) + h_{12}(276.41) + h_{13} \\approx 538.45,\\\\
+y'_2 &= h_{21}(748.83) + h_{22}(276.41) + h_{23} \\approx 454.84;\\\\[6pt]
+
+\\textbf{(3)}\\quad
+x'_3 &= h_{11}(784.18) + h_{12}(263.16) + h_{13} \\approx 594.48,\\\\
+y'_3 &= h_{21}(784.18) + h_{22}(263.16) + h_{23} \\approx 447.77;\\\\[6pt]
+
+\\textbf{(4)}\\quad
+x'_4 &= h_{11}(479.28) + h_{12}(424.45) + h_{13} \\approx 105.58,\\\\
+y'_4 &= h_{21}(479.28) + h_{22}(424.45) + h_{23} \\approx 572.60;\\\\[6pt]
+
+\\textbf{(5)}\\quad
+x'_5 &= h_{11}(861.51) + h_{12}(424.45) + h_{13} \\approx 694.22,\\\\
+y'_5 &= h_{21}(861.51) + h_{22}(424.45) + h_{23} \\approx 691.09;\\\\[6pt]
+
+\\textbf{(6)}\\quad
+x'_6 &= h_{11}(899.07) + h_{12}(675.22) +h_{13} \\approx 721.97,\\\\
+y'_6 &= h_{21}(899.07) + h_{22}(675.22) + h_{23} \\approx 1043.79;\\\\[6pt]
+
+\\textbf{(7)}\\quad
+x'_7 &= h_{11}(861.51) + h_{12}(230.02) + h_{13} \\approx 717.55,\\\\
+y'_7 &= h_{21}(861.51) + h_{22}(230.02) + h_{23} \\approx 426.67;\\\\[6pt]
+
+\\textbf{(8)}\\quad
+x'_8 &= h_{11}(882.50) + h_{12}(372.52) + h_{13} \\approx 732.77,\\\\
+y'_8 &= h_{21}(882.50) + h_{22}(372.52) + h_{23} \\approx 626.99.\\\\
+\\end{aligned}$$
+
+`,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: 'Example Set: ',
+            description: `Point correspondences for the pictures taken at eHub.`,
+            images: ['point_selection_ehub_fullsize.png'],
+            captions: [
+              'Point correspondences selected on the two images'
+            ]
+          }
+          // ,
+          // {
+          //   name: 'Example Set 2: Facade Rectification',
+          //   description: 'Rectifying a building facade using lines/corners as correspondences.',
+          //   images: [' ', ''],
+          //   captions: [
+          //     'Original facade image',
+          //     'Rectified facade using recovered H'
+          //   ]
+          // }
+        ]
+      },
+      {
+        name: 'A.3: Warp the Images',
+        description: `We perform inverse warping using the estimated homography $H$.
+For each destination pixel $\\mathbf{x'}$, compute $\\mathbf{x} = H^{-1}\\mathbf{x'}$ in the source image and sample its value.
+
+Nearest Neighbor (NN):
+$$I_{\\text{NN}}(x',y') = I\\big(\\operatorname{round}(x),\\operatorname{round}(y)\\big).$$
+
+Bilinear Interpolation:
+Let $x_0=\\lfloor x \\rfloor,\\; y_0=\\lfloor y \\rfloor,\\; d_x=x-x_0,\\; d_y=y-y_0$. Then
+$$\\begin{aligned}
+I_{\\text{bilinear}}(x',y') &= (1-d_x)(1-d_y)I(x_0,y_0) + d_x(1-d_y)I(x_0+1,y_0) \\
+&\\quad + (1-d_x)d_y I(x_0,y_0+1) + d_x d_y I(x_0+1,y_0+1).
+\\end{aligned}$$
+
+Procedure:
+1) Compute the output canvas and translation if needed. 
+2) For each pixel in the destination, map with $H^{-1}$ to source. 
+3) Sample with NN or bilinear. 
+4) Produce a binary mask (valid-source) for blending.
+
+Performance notes: In general bilinear is way slower than nearest neighbor, since it accounts more pixel per interpolation. This becomes 
+evident especially when the canvas size is larger, as can be seen below.`,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: 'Set 1: Warp and Masks',
+            description: 'Original, masks generated by NN and bilinear, and the rectified results.',
+            images: ['macallans.jpg', 'macallans_warped_mask_nn.jpg', 'macallans_warped_mask_bilinear.jpg', 'macallans_warped_nn.jpg', 'macallans_warped_bilinear.jpg'],
+            captions: [
+              'Original image',
+              'Mask (Nearest Neighbor)',
+              'Mask (Bilinear)',
+              'Rectified image (NN)',
+              'Rectified image (Bilinear)'
+            ]
+          },
+          {
+            name: 'Set 1 - Nearest Neighbour and Bilinear Interpolation Comparison',
+            description: `After zooming in, we can see the difference between NN and bilinear interpolation. 
+                The former produces blocky artifacts, which introduces the alias for the text (that has sharp edge), while the latter is smoother.
+                Performance-wise: N.N. took around 4.7s, while bilinear took around 10.8s. for raw image size of around 1300x1000 and canvas size of 1000x2300`,
+            images: ['macallans_warped_nn_zoomed.jpg', 'macallans_warped_bilinear_zoomed.jpg'],
+            captions: [
+              'Zoomed Feature for Nearest Neighbor',
+              'Zoomed Feature for Bilinear Interpolation'
+            ]
+          },
+          {
+            name: 'Set 2: Warp and Masks',
+            description: `Second example set showing NN vs. bilinear behavior.
+              Performance-wise: N.N. took around 79.8s, while bilinear took around 170.3s. for raw image size of around 1000x1300 and canvas size of 8000x5000`,
+            images: ['provia_sd_card.jpg', 'provia_sd_card_warped_mask_nn.jpg', 'provia_sd_card_warped_nn.jpg', 'provia_sd_card_cropped.jpg'],
+            captions: [
+              'Original image',
+              'Mask (Nearest Neighbor)',
+              'Rectified image (NN)',
+              'Cropped to only take the region desired'
+            ]
+          }
+        ]
+      },
+      {
+        name: 'A.4: Blend the Images into a Mosaic',
+        description: `We create seamless mosaics by warping multiple images into a common canvas and blending them.
+
+Workflow:<br/> 
+1) Manually select N correspondences between image pairs. <br/> 
+2) Estimate $H$ and compute any necessary translation to a common canvas.<br/> 
+3) Inverse warp images into the canvas using $H$ (translation-corrected).<br/> 
+4) Build Laplacian pyramids of images and a Gaussian pyramid of the mask.<br/> 
+5) Blend at each pyramid level and reconstruct the final mosaic.<br/> 
+We include screenshots of the correspondence selection UI and the binary/feathered mask used in blending.`,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: 'Point Selection and Masking',
+            description: 'Screenshots from the interactive point selection tool and the constructed mask.',
+            images: ['point_selection_ehub_fullsize.png', 'example_mask.jpg'],
+            captions: [
+              "Screenshot: Point correspondences selected on the two images",
+              "Mask used for the left image used for blending"
+            ]
+          },
+          {
+            name: 'Mosaic 1',
+            description: `Two sources and the resulting blended mosaic,
+            Note that here due to the exposure difference, the left side is brighter.`,
+            images: ['ehub_left.jpg', 'ehub_right.jpg'],
+            captions: [
+              'Left Side',
+              'Right Side'
+            ]
+          },
+          {
+            name: '',
+            description: '',
+            images: ['file_ehub_bilinear.jpg'],
+            captions: [
+              'Final mosaic'
+            ]
+          },
+          {
+            name: 'Mosaic 2',
+            description: `Second mosaic example with a different scene.
+            Note that since the exposure and color temperature, despite attempt to correct,
+            are different, some margins is still evident.`,
+            images: ['big_sur_left.jpg', 'big_sur_right_adj_exp+temp.jpg'],
+            captions: [
+              'Left Side',
+              'Right Side'
+            ]
+          },
+          {
+            name: '',
+            description: '',
+            images: ['file_big_sur_bilinear.jpg'],
+            captions: [
+              'Final mosaic'
+            ]
+          },
+          {
+            name: 'Mosaic 3',
+            description: `The third mosaic example. Shot with phone, containing different part of the Big Sur.
+            Note that since the exposure and color temperature, despite attempt to correct,
+            are different, some margins is still evident.`,
+            images: ['big_sur_phone_left.jpg', 'big_sur_phone_right.jpg'],
+            captions: [
+              'Left Side',
+              'Right Side'
+            ]
+          },
+          {
+            name: '',
+            description: '',
+            images: ['file_big_sur_phone_bilinear.jpg'],
+            captions: [
+              'Final mosaic'
+            ]
+          }
+        ]
+      }
+    ],
+    technologies: ['Homography', 'Inverse Warping', 'Nearest Neighbor', 'Bilinear Interpolation', 'Image Rectification', 'Laplacian Pyramid Blending'],
+    demoUrl: 'https://example.com',
+    githubUrl: 'https://github.com/yourusername/project3',
+    features: [
+      'Manual Correspondence Selection',
+      'Robust Homography Calculation',
+      'Rectification and View Synthesis',
+      'Seamless Multi-scale Mosaic Blending'
+    ]
+  }
 }
 
 // Export as array for Home component (easier to map over)
