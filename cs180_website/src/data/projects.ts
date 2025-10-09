@@ -658,8 +658,8 @@ The key insight is that different spatial frequencies require different blending
             description: 'Another set of images share the same COP',
             images: ['ehub_left.jpg', 'ehub_right.jpg'],
             captions: [
-              'Interior A (viewpoint 1)',
-              'Interior B (viewpoint 2)'
+              'Left side of the building',
+              'Right side of the building'
             ]
           }
         ]
@@ -796,8 +796,7 @@ $$I_{\\text{NN}}(x',y') = I\\big(\\operatorname{round}(x),\\operatorname{round}(
 Bilinear Interpolation:
 Let $x_0=\\lfloor x \\rfloor,\\; y_0=\\lfloor y \\rfloor,\\; d_x=x-x_0,\\; d_y=y-y_0$. Then
 $$\\begin{aligned}
-I_{\\text{bilinear}}(x',y') &= (1-d_x)(1-d_y)I(x_0,y_0) + d_x(1-d_y)I(x_0+1,y_0) \\
-&\\quad + (1-d_x)d_y I(x_0,y_0+1) + d_x d_y I(x_0+1,y_0+1).
+I_{\\text{bilinear}}(x',y') &= (1-d_x)(1-d_y)I(x_0,y_0) + d_x(1-d_y)I(x_0+1,y_0) + (1-d_x)d_y I(x_0,y_0+1) + d_x d_y I(x_0+1,y_0+1).
 \\end{aligned}$$
 
 Procedure:
