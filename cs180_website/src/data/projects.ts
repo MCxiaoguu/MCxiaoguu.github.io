@@ -631,7 +631,7 @@ The key insight is that different spatial frequencies require different blending
     description: 'Homographies, Image Warping, and Photo Mosaics',
     longDescription: ``,
     folder: 'project3',
-    image: '',
+    image: 'file_big_sur_phone_bilinear.jpg',
     images: [],
     thumbnailType: 'single',
     imageSets: [
