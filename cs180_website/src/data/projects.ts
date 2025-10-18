@@ -927,6 +927,126 @@ We include screenshots of the correspondence selection UI and the binary/feather
             ]
           }
         ]
+      },
+      {
+        name: 'B.1: Harris Corner Detection',
+        description: `Below are the harris corner detection results on the provided images. The first one on the left
+        is the harris corner without any filtering (and thus provides no information because the dots are all over the place!), 
+        the second one filters out the strongest 100 corners, and the last one uses ANMS to select 100 equally spaced corner features. `,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: '',
+            description: '',
+            images: ["harris_ehub_left_all.jpg", "harris_ehub_left_strongest_100.jpg", "anms_200_ehub_left.jpg"],
+        captions: ["Harris corners (all)", "Harris corners (strongest 100)", "Harris corners (filtered using ANMS 100)"],
+            code: [
+              {
+                language: "python",
+                filename: "example_code.py", 
+                description: "Description of what this code does",
+                code: `def example_function():
+          # Your code here
+          pass`
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: 'B.2: Feature Descriptor Extraction',
+        description: `I used the ANMS to extract 8x8 patches by find a 40 by 40 window at each corner, followed
+        by downsampling to 8x8. Then I take the gradient and find the dominant direction. The patches are then normalized to have zero mean and unit variance to account for illumination changes.`,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: '',
+            description: '',
+            images: ['sbCross_features_N200.jpg'],
+            captions: ['Extracted features from the image'],
+          },
+          {
+            name: '',
+            description: '',
+            images: ["sbCross.jpg", "sbCross_features_extraction_N200.jpg"],
+            captions: ["Original Image", "Image with patches"]
+          }
+        ]
+        // code: [
+        //   {
+        //     language: "python",
+        //     filename: "section_code.py",
+        //     description: "Code explanation",
+        //     code: `# Your implementation here`
+        //   }
+        // ]
+      },
+      {
+        name: 'B.3: Feature Matching',
+        description: `Below are some of the matched features. Note that some of them are mismatched, which is expected due to the similarity of some features.
+        Therefore in the next section we will use RANSAC to filter out the outliers. I used threshold = 0.7 as the same in the original MOPS paper.`,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: 'Feature matching for the E-hub images',
+            description: '',
+            images: ['ehub_feature_matches.jpg'],
+            captions: ['Matched Features. Note that there are some mismatches and some features that map to the same on among images']
+          },
+          {
+            name: 'Feature matching for the Big Sur images',
+            description: '',
+            images: ['big_sur_phone_feature_matches.jpg'],
+            captions: ['Matched Features. Note that there are some mismatches and some features that map to the same on among images']
+          }
+        ]
+      },
+      {
+        name: 'B.4: RANSAC for Robust Homography',
+        description: `Since feature matching sometimes yield not so decent results, we can use RANSAC to filter out the outliers through repeated sampling and consensus`,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: 'Autostitching using RANSAC: Set 1',
+            description: `The left is stitched through manual point selection, 
+            while the right one is stitched through RANSAC feature matching. The RANSAC did pretty well
+            and managed to filter out most of the outliers and matched the performance of the manual selection stitching`,
+            images: ['file_big_sur_phone_bilinear.jpg', 'big_sur_phone_panorama.jpg'],
+            captions: [
+              'Stitched through manual point selection',
+              'Stitched through RANSAC feature matching'
+            ]
+          },
+          {
+            name: 'Autostitching using RANSAC: Set 2',
+            description: `I used the inlier tolerance of 5 pixels, meaning that a feature will only be selected if the 
+            reprojection error is within 5 pixels. The left is stitched through manual point selection,`,
+            images: ['file_ehub_bilinear.jpg', 'ehub_panorama.jpg'],
+            captions: [
+              'Stitched through manual point selection',
+              'Stitched through RANSAC feature matching'
+            ]
+          },
+          {
+            name: 'Autostitching using RANSAC: stitching more than 2 photos',
+            description: `From this it can be seen that even for the vertical panorama stitching, RANSAC can hold it pretty well`,
+            images: ['grimes_panorama.jpg'],
+            captions: [
+              'Stitch panorama using 4 photos captured at Grimes Engineering Center'
+            ]
+          },
+          {
+            name:'',
+            description: 'The below four images are used for composing the above panorama vertially.',
+            images: ['g_1.jpg', 'g_2.jpg', 'g_3.jpg', 'g_4.jpg'],
+            captions: []
+          }
+
+        ]
       }
     ],
     technologies: ['Homography', 'Inverse Warping', 'Nearest Neighbor', 'Bilinear Interpolation', 'Image Rectification', 'Laplacian Pyramid Blending'],
