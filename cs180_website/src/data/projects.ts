@@ -1203,7 +1203,7 @@ Training Iterations: 1,000 to 5,000
           {
             name: 'Novel View GIF',
             description: 'Camera circling your object showing novel views.',
-            images: [''],
+            images: ['dino_orbit.mp4'],
             captions: ['Novel view render for my own dataset']
           },
           {
@@ -1249,15 +1249,15 @@ Batch size: 10k
             captions: ['Training MSE Loss', 'Validation PSNR']
           },
           {
-            name: 'Intermediate Renders (Total iterations: 2500)',
+            name: 'Intermediate Renders (Total iterations: 5000)',
             description: 'Snapshots throughout training to show qualitative improvements.',
-            images: ['dino_Lpos30_Ldir12_ch256_samp64_epoch250.png', 
-              'dino_Lpos30_Ldir12_ch256_samp64_epoch750.png', 
-              'dino_Lpos30_Ldir12_ch256_samp64_epoch1250.png', 
-              'dino_Lpos30_Ldir12_ch256_samp64_epoch1750.png',
+            images: ['dino_Lpos30_Ldir12_ch256_samp64_epoch750.png', 
+              'dino_Lpos100_Ldir24_ch256_samp64_epoch1500.png', 
+              'dino_Lpos100_Ldir24_ch256_samp64_epoch2500.png', 
+              'dino_Lpos100_Ldir24_ch256_samp64_epoch3500.png',
               'dino_original_img.jpg'
             ],
-            captions: ['Iter 250', 'Iter 750', 'Iter 1250', 'Iter 1750', 'Original Image']
+            captions: ['Iter 750', 'Iter 1500', 'Iter 2500', 'Iter 3500', 'Original Image']
           }
         ]
       }
