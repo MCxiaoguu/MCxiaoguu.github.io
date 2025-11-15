@@ -1058,6 +1058,219 @@ We include screenshots of the correspondence selection UI and the binary/feather
       'Rectification and View Synthesis',
       'Seamless Multi-scale Mosaic Blending'
     ]
+  },
+  '5': {
+    id: '5',
+    title: 'Project 4',
+    title_des: 'Neural Fields and Radiance Fields',
+    description: 'Store 3D in the digital eternity',
+    longDescription: `This project fits continuous neural representations at two scales: a 2D neural field for single-image regression, and a full Neural Radiance Field (NeRF) from multi-view images including rendering and evaluation. We begin with camera calibration and 3D scanning visualization, then explore positional encoding, network width/depth, and training stability for neural fields. Finally we implement volume rendering for NeRF, visualize rays/samples, track PSNR, and render spherical videos on the LEGO dataset and our own capture.`,
+    folder: 'project4',
+    image: 'otter_L20_channelwidth512_lr0.001_epochs2000_samples1024.png',
+    images: [],
+    thumbnailType: 'single',
+    imageSets: [
+      {
+        name: 'Part 0: Camera Calibration and 3D Scanning',
+        description: ``,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: 'Frustum Visualization',
+            description: 'Camera frustums of my dataset in Viser. ',
+            images: ['frusta.png', 'frusta_after_undistortion.png'],
+            captions: ['Camera frustums', 'Camera frustums - after undistortion']
+          }
+        ]
+      },
+      {
+        name: 'Part 1: Fit a Neural Field to a 2D Image',
+        description: `Fitting an image with a coordinate MLP using positional encoding.`,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: 'Model Architecture Report',
+            description: `Hyperparameters for 2D NeRF.`,
+            images: [],
+            captions: [],
+            code: [
+              {
+                language: 'python',
+                filename: '',
+                description: 'Hyperparameters',
+                code: 
+`Learning Rate: 1e-3
+Optimizer: Adam
+Hidden Size: 256 to 1024 (see images below)
+Positional Encoding Frequency L: 10 to 100 (see images below)
+  - Larger L for to learn higher frequency details
+Training Iterations: 1,000 to 5,000 
+  - Larger hidden size needs more iterations`
+              }
+            ]
+          },
+          {
+            name: 'Training Progression (Provided + Own Image)',
+            description: 'As more epochs are trained, the reconstruction improves significantly,especially at the higher frequency, capturing finer details and colors.',
+            images: ['fox_val_epoch10_L100_cw512_lr0.001.png','fox_val_epoch400_L100_cw512_lr0.001.png','fox_val_epoch800_L100_cw512_lr0.001.png','fox_val_epoch1600_L100_cw512_lr0.001.png','fox_like.jpg',
+              'otter_val_epoch10_L100_cw512_lr0.001.png','otter_val_epoch400_L100_cw512_lr0.001.png','otter_val_epoch800_L100_cw512_lr0.001.png','otter_val_epoch1600_L100_cw512_lr0.001.png', 'sea_otter.jpg'
+            ],
+            captions: ["Provided Fox image at 10 epochs","400 epochs","800 epochs","1600 epochs", "Original Image",
+              "My selected Image - Sea otter at 10 epochs", "400 epochs", "800 epochs", "1600 epochs", "Original Image" ]
+          },
+          {
+            name: 'Final Results: 2x2 Sweep (L and Width)',
+            description: '',
+            images: ["otter_L20_channelwidth512_lr0.001_epochs2000_samples1024.png","otter_L20_channelwidth1024_lr0.001_epochs5000_samples1024.png",
+              "otter_L100_channelwidth512_lr0.001_epochs2000_samples1024.png","otter_L100_channelwidth1024_lr0.001_epochs5000_samples1024.png"],
+            captions: ["L=20, width=512", "L=20, width=1024", "L=100, width=512", "L=100, width=1024"]
+          },
+          {
+            name: 'PSNR Curve',
+            description: 'PSNR over training for L=20, width=1024 of the sea otter image.',
+            images: ['otter_psnr_L20_width1024_lr0.001_epochs5000_samples1024.png'],
+            captions: ['PSNR over training, L=20, width=1024']
+          }
+        ]
+      },
+      {
+        name: 'Part 2: Fit a Neural Radiance Field from Multi-view Images',
+        description: ``,
+        images: ['nerf_lego_spherical_render.gif'],
+        captions: [],
+        subSections: [
+          {
+            name: 'Implementation Overview',
+            description: `Step-by-step of what I implemented:<br/><br/>
+1) Ray Generation<br/>
+ For each pixel and camera (intrinsics/extrinsics), form a primary ray in world coordinates (origin and direction).<br/><br/>
+
+2) Stratified Sampling Along Rays<br/>
+ Select near/far planes and draw Nc samples per ray with stratification; store per-segment lengths for compositing.<br/><br/>
+
+3) Positional Encoding<br/>
+ Apply positional encoding to 3D sample points (and to view directions for view-dependent color).<br/><br/>
+
+4) MLP Architecture (see figure)<br/>
+ Fully-connected MLP (width W, depth D, ReLU) with a mid-network skip. Two heads: a non-negative density head, and a color head that takes a bottleneck feature plus encoded view direction to predict RGB in [0,1]. I followed the attached MLP layout (mlp_nerf.png).<br/><br/>
+
+5) Volume Rendering (Discrete)<br/>
+ Convert predicted densities into opacities and composite colors front-to-back using accumulated transmittance and per-sample weights.<br/><br/>
+
+6) Loss and Metrics<br/>
+ Optimize MSE on rendered vs ground-truth pixel colors, and track PSNR throughout training.<br/><br/>
+
+7) Training Details<br/>
+ Batch a set of rays per step (e.g., 1024), train with Adam (fixed or decayed learning rate), log PSNR, and periodically render validation views.`,
+            images: ["mlp_nerf.png"],
+            captions: ["NeRF MLP Architecture"]
+          },
+          {
+            name: 'Rays and Samples Visualization',
+            description: 'Up to 100 rays from a few cameras, with sample points',
+            images: ['lego_rays_after_single_step.png'],
+            captions: ['Points from 100 Rays on a single camera frustum']
+          },
+          {
+            name: 'Training Progression (LEGO)',
+            description: 'Predicted images across iterations. The inputs are the validation camera-to-word matrices',
+            images: ['nerf_images_progression.png'],
+            captions: ['Iter 0, 200, 400, 800, 2000, and 4000 (out of 5000 iterations) respectively']
+          },
+          {
+            name: 'Validation PSNR Curve',
+            description: 'Plot PSNR on the validation set over training.',
+            images: ['nerf_psnr_curve.png'],
+            captions: ['Validation PSNR for the Lego dataset']
+          },
+          {
+            name: 'Spherical Rendering (LEGO)',
+            description: `A 360-degree novel-view render around the object<br/>
+            (If the video is not showing up in the pdf, try visit the website.)`,
+            images: ['nerf_lego_spherical_render.mp4'],
+            captions: ['Spherical orbit render (LEGO)']
+          }
+        ]
+      },
+      {
+        name: 'Part 2.6: Training with Your Own Data',
+        description: `I captured a set of 20 images of a dinosaur figurine using a macro lens with camera.`,
+        images: [],
+        captions: [],
+        subSections: [
+          {
+            name: 'Novel View GIF',
+            description: 'Camera circling your object showing novel views.',
+            images: [''],
+            captions: ['Novel view render for my own dataset']
+          },
+          {
+            name: 'Implementation Notes',
+            description: `The hyperparameters I used for training on my own dataset are as follows:`,
+            images: [],
+            captions: [],
+            code: [
+              {
+                language: 'python',
+                filename: '',
+                description: '',
+                code: 
+`Positional Encoding layer for rays = 24
+Postional Encoding layer for input = 100
+Channel width: 256
+Far: 2.0 (see below)
+Near: 0.8
+Number of samples: 64
+Number of epochs: 5000
+Batch size: 10k
+`
+              }
+            ]
+          },
+          {
+            name:'Near/Far Selection Trick',
+            description: `Near/Far Selection Trick:<br/>
+            Because the near and far for the LEGO dataset and my own set of image are different, I had to adjust the near/far planes accordingly.<br/>
+            To quickly select the values without retraining from scratch each time, I inspect them by
+            tracking the rays in the visers.
+            The image on the left showed a suboptimal near/far selection where many samples are outside the object of interest (especially behind the camera frustums),
+            while the right image shows the improved selection, where most samples are within the object volume.<br/>
+            The selected value was also in accordance with my photographing setup: I used a 100mm Nikkor micro lens!
+            `,  
+            images:["viser_before_select_near_far.png", "viser_after_select_near_far.png"],
+            captions:["Viser Before Select Near/Far","Viser After Select Near/Far"]
+          },
+          {
+            name: 'Training Loss Curve',
+            description: 'Plot your training loss over iterations.',
+            images: ['dino_training_loss.png', 'dino_psnr_curve.png'],
+            captions: ['Training MSE Loss', 'Validation PSNR']
+          },
+          {
+            name: 'Intermediate Renders (Total iterations: 2500)',
+            description: 'Snapshots throughout training to show qualitative improvements.',
+            images: ['dino_Lpos30_Ldir12_ch256_samp64_epoch250.png', 
+              'dino_Lpos30_Ldir12_ch256_samp64_epoch750.png', 
+              'dino_Lpos30_Ldir12_ch256_samp64_epoch1250.png', 
+              'dino_Lpos30_Ldir12_ch256_samp64_epoch1750.png',
+              'dino_original_img.jpg'
+            ],
+            captions: ['Iter 250', 'Iter 750', 'Iter 1250', 'Iter 1750', 'Original Image']
+          }
+        ]
+      }
+    ],
+    technologies: ['Calibration', 'Positional Encoding', 'MLP', 'Volume Rendering', 'NeRF', 'PSNR'],
+    demoUrl: 'https://example.com',
+    githubUrl: 'https://github.com/yourusername/project4',
+    features: [
+      'Camera calibration and frustum visualization',
+      '2D neural field image fitting',
+      'NeRF with volumetric rendering',
+      'Rays/samples visualization and spherical rendering'
+    ]
   }
 }
 
