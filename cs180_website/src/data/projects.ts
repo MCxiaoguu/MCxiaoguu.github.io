@@ -1280,7 +1280,7 @@ Batch size: 10k
     description: 'Diffusion-controlled editing in DeepFloyd IF followed by training MNIST flow-matching UNets from scratch.',
     longDescription: `Part A documents how I steer the pretrained DeepFloyd IF pipeline with custom prompts, iterative denoising, CFG, SDEdit, inpainting, visual anagrams, and hybrid image generation. Part B rewrites the UNet from low-level PyTorch modules, trains single-step denoisers, and scales into time-conditioned and class-conditioned flow matching models with full sampling diagnostics.`,
     folder: 'project5',
-    image: 'project5_cover.png',
+    image: 'prj5_thumbnail.png',
     images: [],
     thumbnailType: 'single',
     imageSets: [
