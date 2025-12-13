@@ -1,0 +1,47 @@
+{
+  "hash": "fc4fd63d",
+  "browserHash": "74218651",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "00d23884",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "e8cb137a",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "a35433f4",
+      "needsInterop": false
+    },
+    "react-katex": {
+      "src": "../../node_modules/react-katex/dist/react-katex.js",
+      "file": "react-katex.js",
+      "fileHash": "cd410f88",
+      "needsInterop": true
+    },
+    "mermaid": {
+      "src": "../../node_modules/mermaid/dist/mermaid.esm.min.mjs",
+      "file": "mermaid.js",
+      "fileHash": "fce9eefb",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-I76OCRLF": {
+      "file": "chunk-I76OCRLF.js"
+    },
+    "chunk-QFYAL5BD": {
+      "file": "chunk-QFYAL5BD.js"
+    },
+    "chunk-UXIASGQL": {
+      "file": "chunk-UXIASGQL.js"
+    }
+  }
+}
