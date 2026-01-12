@@ -25,9 +25,9 @@ const Home: React.FC<HomeProps> = ({ isDark, toggleTheme }) => {
       <main>
         <PageTransition>
           <div className="mx-4 md:mx-12 lg:mx-[100px] my-10">
-      <ul className="homepage_img flex flex-col md:flex-row justify-between gap-[2px] md:gap-[50px] mb-8">
+      <ul className="homepage_img grid grid-cols-1 md:grid-cols-3 gap-[20px] md:gap-[50px] mb-8">
         {projectsArray.map((project) => (
-          <li key={project.id} className="list-none text-center flex-1">
+          <li key={project.id} className="list-none text-center">
             <Link to={`/${project.id}`} className="block group">
               <div className="relative overflow-hidden">
                 <ProjectThumbnail
